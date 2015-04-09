@@ -189,4 +189,21 @@ sub val {
     else { return undef; }
 }
 
+#  Add two fractions together.
+
+sub add {
+
+    my ( $num1, $num2 ) = @_;
+
+    if ( defined $num1->den && defined $num2->den ) {
+
+        my $total = Number::MyFraction->new(
+            $num1->num * $num2->den + $num2->num * $num1->den,
+            $num1->den * $num2->den );
+	    return $total;
+    }
+}
+
+use overload '+' => \&add;
+
 1; # End of Number::MyFraction
