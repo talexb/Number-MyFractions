@@ -6,7 +6,7 @@ use warnings;
 
 =head1 NAME
 
-Number::MyFraction - The great new Number::MyFraction!
+Number::MyFraction - a class to represent fractions
 
 =head1 VERSION
 
@@ -19,13 +19,19 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+This class represents fractions as objects that can be worked with in
+mathematical calculations without losing any accuracy. This is similar
+to the Number::Fraction module by Dave Cross.
 
 Perhaps a little code snippet.
 
     use Number::MyFraction;
 
-    my $foo = Number::MyFraction->new();
+    my $half  = Number::MyFraction->new(1, 2);
+    my $third = Number::MyFraction->new(1, 3);
+	my $sum   = $half + $third;
+
+	print $sum; # prints '5/6'
     ...
 
 =head1 EXPORT
@@ -34,6 +40,8 @@ A list of functions that can be exported.  You can delete this section
 if you don't export anything, such as for a purely object-oriented module.
 
 =head1 SUBROUTINES/METHODS
+
+This boilerplate left in for now while I write some code.
 
 =head2 function1
 
@@ -137,5 +145,48 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 =cut
+
+#  Create fraction object with a numerator and denominator.
+
+sub new {
+
+    my ( $class, @args ) = @_;
+    my $self;
+
+    if ( @args == 2 ) {
+
+        $self = { n => $args[0], d => $args[1] };
+    }
+    elsif ( @args == 1 ) {
+
+        my ( $n, $d ) = ( $args[0] =~ '(\d+)/(\d+)' );
+        $self = { n => $n, d => $d };
+    } else {
+
+        $self = { n => undef, d => undef };
+	}
+
+    bless $self, $class;
+    return $self;
+}
+
+#  Return just the numerator or the denominator.
+
+sub num { my $self = shift; return $self->{'n'}; }
+sub den { my $self = shift; return $self->{'d'}; }
+
+#  Figure out the value.
+
+sub val {
+
+    my $self = shift;
+    if ( !defined $self->{'d'} || $self->{'d'} == 0 ) { return undef; }
+
+    if ( defined $self->{'n'} ) {
+
+        return join( '/', map { $self->{$_} } qw/n d/ );
+    }
+    else { return undef; }
+}
 
 1; # End of Number::MyFraction
