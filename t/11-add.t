@@ -1,4 +1,7 @@
-#!/usr/bin/perl -T
+#!/usr/bin/perl
+
+use warnings;
+use strict;
 
 use Test::More;
 
@@ -12,7 +15,7 @@ use Number::MyFraction;
     my $third = Number::MyFraction->new(1, 3);
 	ok(defined $third, 'Object created');
 
-	$total = $half + $third;
+	my $total = $half + $third;
 	is(5, $total->num, 'Numerator value');
 	is(6, $total->den, 'Denominator value');
 

@@ -1,4 +1,7 @@
-#!/usr/bin/perl -T
+#!/usr/bin/perl
+
+use warnings;
+use strict;
 
 use Test::More;
 
@@ -12,7 +15,7 @@ use Number::MyFraction;
     my $quarter2 = Number::MyFraction->new( 1, 4 );
     ok( defined $quarter2, 'Object created' );
 
-    $total = $quarter1 + $quarter2;
+    my $total = $quarter1 + $quarter2;
     is( 1, $total->num, 'Numerator value' );
     is( 2, $total->den, 'Denominator value' );
 
