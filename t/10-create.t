@@ -98,6 +98,36 @@ use Number::MyFraction;
 
     is( '5/1', $whole_number->val, 'Value' );
 
+    #  Test format #5a
+
+    $whole_number = Number::MyFraction->new('5.');
+    check_object($whole_number);
+
+    is( 5, $whole_number->num, 'Numerator value' );
+    is( 1, $whole_number->den, 'Denominator value' );
+
+    is( '5/1', $whole_number->val, 'Value' );
+
+    #  Test format #5b
+
+    $whole_number = Number::MyFraction->new('5.0');
+    check_object($whole_number);
+
+    is( 5, $whole_number->num, 'Numerator value' );
+    is( 1, $whole_number->den, 'Denominator value' );
+
+    is( '5/1', $whole_number->val, 'Value' );
+
+    #  Test format #5c
+
+    my $not_whole_number = Number::MyFraction->new('5.1');
+    check_object($not_whole_number);
+
+    is( 51, $not_whole_number->num, 'Numerator value' );
+    is( 10, $not_whole_number->den, 'Denominator value' );
+
+    is( '51/10', $not_whole_number->val, 'Value' );
+
     #  Test undefined value
 
     my $no_value = Number::MyFraction->new();
