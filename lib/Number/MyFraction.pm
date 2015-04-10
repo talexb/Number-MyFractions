@@ -249,7 +249,9 @@ sub _factor {
     my %factors;
     for my $f (@primes) {
 
-        if ( $f * $f > $num ) { last; }
+		if ( $f == $num ) { $factors{$f}++; last; }
+
+        if ( $f > $num ) { last; }
         while ( $num % $f == 0 ) {
 
             $factors{$f}++;
