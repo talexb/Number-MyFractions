@@ -167,13 +167,23 @@ sub new {
 
           $self = { n => $1, d => $2 };
 
-		} elsif ( $args[0] =~ /([-+]?\d*\.(\d+))/ ) {
+		} elsif ( $args[0] =~ /([-+]?\d*(\.(\d+))?)(%)?/ ) {
 
-		  my $d = 10 ** length $2;
-		  my $n = $1 * $d;
+		  my ( $number, $dec_fract, $fract, $percent ) = 
+		    ( $1, $2, $3, $4 );
+          my ( $n, $d );
+
+		  if ( defined $dec_fract ) {
+		    $d = 10 ** length $fract;
+		    $n = $number * $d;
+		  } else {
+		    $d = 1;
+			$n = $number;
+		  }
+		  if ( defined $percent && $percent ) { $d *= 100; }
+
           $self = { n => $n, d => $d };
 		}
-		#  TODO: Percentages.
 	}
 
 	#  If the previous cases didn't populate $self, just go with an

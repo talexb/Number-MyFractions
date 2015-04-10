@@ -82,7 +82,7 @@ use Number::MyFraction;
 
     #  Test format #3a
 
-    my $another_half = Number::MyFraction->new('-.5');
+    $another_half = Number::MyFraction->new('-.5');
 	ok(defined $another_half, 'Object created');
 	ok(defined $half->num, 'Numerator value');
 	ok(defined $half->den, 'Denominator value');
@@ -91,6 +91,30 @@ use Number::MyFraction;
 	is(2, $another_half->den, 'Denominator value');
 
 	is('-1/2', $another_half->val, 'Value');
+
+    #  Test format #4
+
+    $another_half = Number::MyFraction->new('50%');
+	ok(defined $another_half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
+
+	is(1, $another_half->num, 'Numerator value');
+	is(2, $another_half->den, 'Denominator value');
+
+	is('1/2', $another_half->val, 'Value');
+
+    #  Test format #5
+
+    my $whole_number = Number::MyFraction->new('5');
+	ok(defined $whole_number, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
+
+	is(5, $whole_number->num, 'Numerator value');
+	is(1, $whole_number->den, 'Denominator value');
+
+	is('5/1', $whole_number->val, 'Value');
 
 	#  Test undefined value
 
