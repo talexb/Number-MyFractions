@@ -163,8 +163,9 @@ sub new {
     }
     elsif ( @args == 1 ) {
 
-        my ( $n, $d ) = ( $args[0] =~ '(\d+)/(\d+)' );
-        $self = { n => $n, d => $d };
+		if ( $args[0] =~ '([-+]?\d+)/([-+]?\d+)' ) {
+          $self = { n => $1, d => $2 };
+		}
     } else {
 
         $self = { n => undef, d => undef };
