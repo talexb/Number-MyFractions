@@ -148,6 +148,10 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #  Create fraction object with a numerator and denominator.
 
+my @primes = qw/2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71
+73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167
+173 179 181 191 193 197 199/;
+
 sub new {
 
     my ( $class, @args ) = @_;
@@ -167,7 +171,92 @@ sub new {
 	}
 
     bless $self, $class;
+	if ( defined $self->num && defined $self->den ) {
+
+	    $self->_normalize;
+	}
     return $self;
+}
+
+#  Normalize the fraction so that 12/200 -> 3/50, and so forth.
+
+sub _normalize {
+
+    my $self = shift;
+    if ( $self->num == 1 ) { return; }
+
+	#  Get the signs sorted out. If both signs are negative, change them
+	#  both to be positive; if only one is negative, make the numerator
+	#  negative. During factorization, all numbers are positive; we'll
+	#  correct the sign at the end.
+
+	my $negative_num = 0;
+	if ( $self->num < 0 ) { $self->{'n'} *= -1; $negative_num = 1; }
+	my $negative_den = 0;
+	if ( $self->den < 0 ) { $self->{'d'} *= -1; $negative_den = 1; }
+
+    if ( $negative_num && $negative_den ) {
+
+        $negative_num = 0;
+        $negative_den = 0;
+
+    } elsif ( $negative_num ^ $negative_den ) {
+
+        $negative_num = 1;
+        $negative_den = 0;
+	}
+
+	#  Get prime factors for num and den;
+
+    my $num_factors = _factor( $self->num );
+    my $den_factors = _factor( $self->den );
+
+	my $lcm = 1;
+    foreach my $p ( sort { $a <=> $b } keys %{$num_factors} ) {
+
+        if ( exists $den_factors->{$p} ) {
+
+			#  If there are common factors, find the smallest number
+			#  that they have in common, and add it in to the LCM that
+			#  we're keeping track of.
+
+            my $count =
+              ( sort { $a <=> $b } ( $num_factors->{$p}, $den_factors->{$p} ) )
+              [0];
+            $lcm *= $p ** $count;
+        }
+    }
+
+	if ( $lcm > 1 ) {
+
+	  #  Update the values.
+
+	  $self->{'n'} = ( $self->num / $lcm );
+	  $self->{'d'} = ( $self->den / $lcm );
+	}
+
+	#  Correct the sign, if necessary.
+
+	if ( $negative_num ) { $self->{'n'} *= -1; }
+}
+
+#  Create a hash with the prime number factors of the input number.
+
+sub _factor {
+
+    my ($num) = @_;
+
+    my %factors;
+    for my $f (@primes) {
+
+        if ( $f * $f > $num ) { last; }
+        while ( $num % $f == 0 ) {
+
+            $factors{$f}++;
+            $num /= $f;
+        }
+    }
+    return \%factors;
 }
 
 #  Return just the numerator or the denominator.
@@ -204,6 +293,21 @@ sub add {
     }
 }
 
-use overload '+' => \&add;
+#  Subtract two fractions.
+
+sub subtract {
+
+    my ( $num1, $num2 ) = @_;
+
+    if ( defined $num1->den && defined $num2->den ) {
+
+        my $total = Number::MyFraction->new(
+            $num1->num * $num2->den - $num2->num * $num1->den,
+            $num1->den * $num2->den );
+	    return $total;
+    }
+}
+
+use overload '+' => \&add, '-' => \&subtract;
 
 1; # End of Number::MyFraction
