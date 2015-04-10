@@ -12,6 +12,8 @@ use Number::MyFraction;
 
     my $half = Number::MyFraction->new(1, 2);
 	ok(defined $half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
 
 	is(1, $half->num, 'Numerator value');
 	is(2, $half->den, 'Denominator value');
@@ -22,11 +24,73 @@ use Number::MyFraction;
 
     my $other_half = Number::MyFraction->new('1/2');
 	ok(defined $other_half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
 
 	is(1, $other_half->num, 'Numerator value');
 	is(2, $other_half->den, 'Denominator value');
 
 	is('1/2', $other_half->val, 'Value');
+
+    #  Test format #2a
+
+    $other_half = Number::MyFraction->new('-1/2');
+	ok(defined $other_half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
+
+	is(-1, $other_half->num, 'Numerator value');
+	is(2, $other_half->den, 'Denominator value');
+
+	is('-1/2', $other_half->val, 'Value');
+
+    #  Test format #2b
+
+    $other_half = Number::MyFraction->new('1/-2');
+	ok(defined $other_half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
+
+	is(-1, $other_half->num, 'Numerator value');
+	is(2, $other_half->den, 'Denominator value');
+
+	is('-1/2', $other_half->val, 'Value');
+
+    #  Test format #2c
+
+    $other_half = Number::MyFraction->new('-1/-2');
+	ok(defined $other_half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
+
+	is(1, $other_half->num, 'Numerator value');
+	is(2, $other_half->den, 'Denominator value');
+
+	is('1/2', $other_half->val, 'Value');
+
+    #  Test format #3
+
+    my $another_half = Number::MyFraction->new('.5');
+	ok(defined $another_half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
+
+	is(1, $another_half->num, 'Numerator value');
+	is(2, $another_half->den, 'Denominator value');
+
+	is('1/2', $another_half->val, 'Value');
+
+    #  Test format #3a
+
+    my $another_half = Number::MyFraction->new('-.5');
+	ok(defined $another_half, 'Object created');
+	ok(defined $half->num, 'Numerator value');
+	ok(defined $half->den, 'Denominator value');
+
+	is(-1, $another_half->num, 'Numerator value');
+	is(2, $another_half->den, 'Denominator value');
+
+	is('-1/2', $another_half->val, 'Value');
 
 	#  Test undefined value
 

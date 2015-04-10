@@ -164,9 +164,23 @@ sub new {
     elsif ( @args == 1 ) {
 
 		if ( $args[0] =~ '([-+]?\d+)/([-+]?\d+)' ) {
+
           $self = { n => $1, d => $2 };
+
+		} elsif ( $args[0] =~ /([-+]?\d*\.(\d+))/ ) {
+
+		  my $d = 10 ** length $2;
+		  my $n = $1 * $d;
+          $self = { n => $n, d => $d };
 		}
-    } else {
+		#  TODO: Percentages.
+	}
+
+	#  If the previous cases didn't populate $self, just go with an
+	#  undefined value for now. This is easier than adding a pile of
+	#  else statements, all with the same default value.
+
+	if ( !defined $self ) {
 
         $self = { n => undef, d => undef };
 	}
@@ -184,7 +198,7 @@ sub new {
 sub _normalize {
 
     my $self = shift;
-    if ( $self->num == 1 ) { return; }
+    if ( $self->num == 1 && $self->den > 0 ) { return; }
 
 	#  Get the signs sorted out. If both signs are negative, change them
 	#  both to be positive; if only one is negative, make the numerator
