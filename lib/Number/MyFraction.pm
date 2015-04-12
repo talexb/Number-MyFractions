@@ -305,6 +305,16 @@ sub val {
     else { return undef; }
 }
 
+#  Actually do the division and move the value into the real realm.
+
+sub decimal_val {
+
+    my $self = shift;
+    if ( !defined $self->{'d'} || $self->{'d'} == 0 ) { return undef; }
+
+    return ( $self->{'n'} / $self->{'d'} );
+}
+
 #  Add two fractions together.
 
 sub add {

@@ -16,7 +16,8 @@ use Number::MyFraction;
     is( 1, $half->num, 'Numerator value' );
     is( 2, $half->den, 'Denominator value' );
 
-    is( '1/2', $half->val, 'Value' );
+    is( '1/2', $half->val,         'Value' );
+    is( .5,    $half->decimal_val, 'Value' );
 
     #  Test format #2
 
@@ -26,7 +27,8 @@ use Number::MyFraction;
     is( 1, $other_half->num, 'Numerator value' );
     is( 2, $other_half->den, 'Denominator value' );
 
-    is( '1/2', $other_half->val, 'Value' );
+    is( '1/2', $other_half->val,         'Value' );
+    is( .5,    $other_half->decimal_val, 'Value' );
 
     #  Test format #2a
 
@@ -36,7 +38,8 @@ use Number::MyFraction;
     is( -1, $other_half->num, 'Numerator value' );
     is( 2,  $other_half->den, 'Denominator value' );
 
-    is( '-1/2', $other_half->val, 'Value' );
+    is( '-1/2', $other_half->val,         'Value' );
+    is( -.5,    $other_half->decimal_val, 'Value' );
 
     #  Test format #2b
 
@@ -46,7 +49,8 @@ use Number::MyFraction;
     is( -1, $other_half->num, 'Numerator value' );
     is( 2,  $other_half->den, 'Denominator value' );
 
-    is( '-1/2', $other_half->val, 'Value' );
+    is( '-1/2', $other_half->val,         'Value' );
+    is( -.5,    $other_half->decimal_val, 'Value' );
 
     #  Test format #2c
 
@@ -56,7 +60,8 @@ use Number::MyFraction;
     is( 1, $other_half->num, 'Numerator value' );
     is( 2, $other_half->den, 'Denominator value' );
 
-    is( '1/2', $other_half->val, 'Value' );
+    is( '1/2', $other_half->val,         'Value' );
+    is( .5,    $other_half->decimal_val, 'Value' );
 
     #  Test format #3
 
@@ -66,7 +71,8 @@ use Number::MyFraction;
     is( 1, $another_half->num, 'Numerator value' );
     is( 2, $another_half->den, 'Denominator value' );
 
-    is( '1/2', $another_half->val, 'Value' );
+    is( '1/2', $another_half->val,         'Value' );
+    is( .5,    $another_half->decimal_val, 'Value' );
 
     #  Test format #3a
 
@@ -76,7 +82,8 @@ use Number::MyFraction;
     is( -1, $another_half->num, 'Numerator value' );
     is( 2,  $another_half->den, 'Denominator value' );
 
-    is( '-1/2', $another_half->val, 'Value' );
+    is( '-1/2', $another_half->val,         'Value' );
+    is( -.5,    $another_half->decimal_val, 'Value' );
 
     #  Test format #4
 
@@ -86,7 +93,8 @@ use Number::MyFraction;
     is( 1, $another_half->num, 'Numerator value' );
     is( 2, $another_half->den, 'Denominator value' );
 
-    is( '1/2', $another_half->val, 'Value' );
+    is( '1/2', $another_half->val,         'Value' );
+    is( .5,    $another_half->decimal_val, 'Value' );
 
     #  Test format #5
 
@@ -96,7 +104,8 @@ use Number::MyFraction;
     is( 5, $whole_number->num, 'Numerator value' );
     is( 1, $whole_number->den, 'Denominator value' );
 
-    is( '5/1', $whole_number->val, 'Value' );
+    is( '5/1', $whole_number->val,         'Value' );
+    is( 5,     $whole_number->decimal_val, 'Value' );
 
     #  Test format #5a
 
@@ -106,7 +115,8 @@ use Number::MyFraction;
     is( 5, $whole_number->num, 'Numerator value' );
     is( 1, $whole_number->den, 'Denominator value' );
 
-    is( '5/1', $whole_number->val, 'Value' );
+    is( '5/1', $whole_number->val,         'Value' );
+    is( 5,     $whole_number->decimal_val, 'Value' );
 
     #  Test format #5b
 
@@ -116,7 +126,8 @@ use Number::MyFraction;
     is( 5, $whole_number->num, 'Numerator value' );
     is( 1, $whole_number->den, 'Denominator value' );
 
-    is( '5/1', $whole_number->val, 'Value' );
+    is( '5/1', $whole_number->val,         'Value' );
+    is( 5,     $whole_number->decimal_val, 'Value' );
 
     #  Test format #5c
 
@@ -126,7 +137,8 @@ use Number::MyFraction;
     is( 51, $not_whole_number->num, 'Numerator value' );
     is( 10, $not_whole_number->den, 'Denominator value' );
 
-    is( '51/10', $not_whole_number->val, 'Value' );
+    is( '51/10', $not_whole_number->val,         'Value' );
+    is( 5.1,     $not_whole_number->decimal_val, 'Value' );
 
     #  Test undefined value
 
@@ -136,7 +148,8 @@ use Number::MyFraction;
     is( undef, $no_value->num, 'Numerator value' );
     is( undef, $no_value->den, 'Denominator value' );
 
-    is( undef, $no_value->val, 'Value' );
+    is( undef, $no_value->val,         'Value' );
+    is( undef, $no_value->decimal_val, 'Value' );
 
     #  Test undefined value (because denominator is zero)
 
@@ -146,7 +159,8 @@ use Number::MyFraction;
     is( 1, $no_value2->num, 'Numerator value' );
     is( 0, $no_value2->den, 'Denominator value' );
 
-    is( undef, $no_value2->val, 'Value' );
+    is( undef, $no_value2->val,         'Value' );
+    is( undef, $no_value2->decimal_val, 'Value' );
 
     done_testing;
 }
