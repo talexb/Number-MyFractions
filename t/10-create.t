@@ -96,6 +96,17 @@ use Number::MyFraction;
     is( '1/2', $another_half->val,         'Value' );
     is( .5,    $another_half->decimal_val, 'Value' );
 
+    #  Test format #4a
+
+    $another_half = Number::MyFraction->new('-50%');
+    check_object($another_half);
+
+    is( -1, $another_half->num, 'Numerator value' );
+    is( 2,  $another_half->den, 'Denominator value' );
+
+    is( '-1/2', $another_half->val,         'Value' );
+    is( -.5,    $another_half->decimal_val, 'Value' );
+
     #  Test format #5
 
     my $whole_number = Number::MyFraction->new('5');

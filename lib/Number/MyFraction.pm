@@ -212,6 +212,7 @@ sub _normalize {
 
     my $self = shift;
     if ( $self->num == 1 && $self->den > 0 ) { return; }
+    if ( $self->den == 1 ) { return; }
 
     #  Get the signs sorted out. If both signs are negative, change them
     #  both to be positive; if only one is negative, make the numerator
@@ -241,8 +242,8 @@ sub _normalize {
     my $num_factors = _factor( $self->num );
     my $den_factors = _factor( $self->den );
 
-	#  If both numbers have some factors, let's see if they have any in
-	#  common.
+    #  If both numbers have some factors, let's see if they have any in
+    #  common.
 
     if ( keys %{$den_factors} && keys %{$num_factors} ) {
 
@@ -251,9 +252,9 @@ sub _normalize {
 
             if ( exists $den_factors->{$p} ) {
 
-				#  If there are common factors, find the smallest number
-				#  that they have in common, and add it in to the LCM
-				#  that we're keeping track of.
+                #  If there are common factors, find the smallest number
+                #  that they have in common, and add it in to the LCM
+                #  that we're keeping track of.
 
                 my $count =
                   ( sort { $a <=> $b }
@@ -276,8 +277,8 @@ sub _normalize {
 
     if ($negative_num) { $self->{'n'} *= -1; }
 
-	#  TODO: Mark that this fraction has been normalized so that it
-	#  doesn't get done again.
+    #  TODO: Mark that this fraction has been normalized so that it
+    #  doesn't get done again.
 }
 
 #  Create a hash with the prime number factors of the input number.
