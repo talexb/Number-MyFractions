@@ -205,64 +205,79 @@ sub new {
 
 #  Normalize the fraction so that 12/200 -> 3/50, and so forth.
 
+#  TODO: Check an internal flag that indicates that it has already been
+#  normalized so we don't repeat work unnecessarily.
+
 sub _normalize {
 
     my $self = shift;
     if ( $self->num == 1 && $self->den > 0 ) { return; }
 
-	#  Get the signs sorted out. If both signs are negative, change them
-	#  both to be positive; if only one is negative, make the numerator
-	#  negative. During factorization, all numbers are positive; we'll
-	#  correct the sign at the end.
+    #  Get the signs sorted out. If both signs are negative, change them
+    #  both to be positive; if only one is negative, make the numerator
+    #  negative. During factorization, all numbers are positive; we'll
+    #  correct the sign at the end.
 
-	my $negative_num = 0;
-	if ( $self->num < 0 ) { $self->{'n'} *= -1; $negative_num = 1; }
-	my $negative_den = 0;
-	if ( $self->den < 0 ) { $self->{'d'} *= -1; $negative_den = 1; }
+    my $negative_num = 0;
+    if ( $self->num < 0 ) { $self->{'n'} *= -1; $negative_num = 1; }
+    my $negative_den = 0;
+    if ( $self->den < 0 ) { $self->{'d'} *= -1; $negative_den = 1; }
 
     if ( $negative_num && $negative_den ) {
 
         $negative_num = 0;
         $negative_den = 0;
 
-    } elsif ( $negative_num ^ $negative_den ) {
+    }
+    elsif ( $negative_num ^ $negative_den ) {
 
         $negative_num = 1;
         $negative_den = 0;
-	}
+    }
 
-	#  Get prime factors for num and den;
+    #  Get prime factors for num and den, and use that to calculate the
+    #  Lowest Common Multiple.
 
     my $num_factors = _factor( $self->num );
     my $den_factors = _factor( $self->den );
 
-	my $lcm = 1;
-    foreach my $p ( sort { $a <=> $b } keys %{$num_factors} ) {
+	#  If both numbers have some factors, let's see if they have any in
+	#  common.
 
-        if ( exists $den_factors->{$p} ) {
+    if ( keys %{$den_factors} && keys %{$num_factors} ) {
 
-			#  If there are common factors, find the smallest number
-			#  that they have in common, and add it in to the LCM that
-			#  we're keeping track of.
+        my $lcm = 1;
+        foreach my $p ( sort { $a <=> $b } keys %{$num_factors} ) {
 
-            my $count =
-              ( sort { $a <=> $b } ( $num_factors->{$p}, $den_factors->{$p} ) )
-              [0];
-            $lcm *= $p ** $count;
+            if ( exists $den_factors->{$p} ) {
+
+				#  If there are common factors, find the smallest number
+				#  that they have in common, and add it in to the LCM
+				#  that we're keeping track of.
+
+                my $count =
+                  ( sort { $a <=> $b }
+                      ( $num_factors->{$p}, $den_factors->{$p} ) )[0];
+                $lcm *= $p**$count;
+            }
+        }
+
+        if ( $lcm > 1 ) {
+
+            #  Update the two values by dividing both by the LCM.
+
+            $self->{'n'} = ( $self->num / $lcm );
+            $self->{'d'} = ( $self->den / $lcm );
         }
     }
 
-	if ( $lcm > 1 ) {
+    #  Correct the sign, if necessary, by putting the negative in the
+    #  numerator.
 
-	  #  Update the values.
+    if ($negative_num) { $self->{'n'} *= -1; }
 
-	  $self->{'n'} = ( $self->num / $lcm );
-	  $self->{'d'} = ( $self->den / $lcm );
-	}
-
-	#  Correct the sign, if necessary.
-
-	if ( $negative_num ) { $self->{'n'} *= -1; }
+	#  TODO: Mark that this fraction has been normalized so that it
+	#  doesn't get done again.
 }
 
 #  Create a hash with the prime number factors of the input number.
