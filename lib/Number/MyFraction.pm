@@ -4,6 +4,9 @@ use 5.006;
 use strict;
 use warnings;
 
+use Memoize;
+memoize('_factor');
+
 =head1 NAME
 
 Number::MyFraction - a class to represent fractions
