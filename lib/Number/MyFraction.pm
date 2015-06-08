@@ -451,6 +451,19 @@ sub subtract {
     }
 }
 
-use overload '+' => \&add, '-' => \&subtract;
+sub multiply {
+
+    my ( $num1, $num2 ) = @_;
+
+    if ( defined $num1->den && defined $num2->den ) {
+
+        my $product = Number::MyFraction->new(
+            $num1->num * $num2->num,
+            $num1->den * $num2->den );
+        return $product;
+    }
+}
+
+use overload '+' => \&add, '-' => \&subtract, '*' => \&multiply;
 
 1;    # End of Number::MyFraction
